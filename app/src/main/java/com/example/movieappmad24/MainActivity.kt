@@ -59,6 +59,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -106,6 +108,18 @@ class MainActivity : ComponentActivity() {
                     }
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
+                        topBar = {
+                            TopAppBar(
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    titleContentColor = MaterialTheme.colorScheme.primary,
+                                ),
+                                title = {
+                                    Text(text = "Movie App",
+                                        textAlign = TextAlign.Center)
+                                }
+                            )
+                        },
                         bottomBar = {
                             NavigationBar {
                                 items.forEachIndexed{ index, item ->
@@ -113,10 +127,9 @@ class MainActivity : ComponentActivity() {
                                         selected = selectedItemIndex == index,
                                         onClick = {
                                             selectedItemIndex = index
-                                            // navController.navigate(item.title)
                                         },
                                         label = {
-                                          Text(text = item.title)  
+                                          Text(text = item.title)
                                         },
                                         icon = {
                                             Icon(
