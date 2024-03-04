@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -72,6 +75,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.ui.theme.MovieAppMAD24Theme
+import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextOverflow
 
 data class BottomItem(
     val title: String,
@@ -171,8 +176,17 @@ fun MovieRow(movie: Movie) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(5.dp)
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            ),
         shape = ShapeDefaults.Large,
+        onClick = {
+                  showDetails = !showDetails
+        },
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
         Column {
@@ -218,6 +232,37 @@ fun MovieRow(movie: Movie) {
                     if (showDetails) Icons.Filled.KeyboardArrowDown
                     else Icons.Default.KeyboardArrowUp, contentDescription = "show more"
                 )
+            }
+            if(showDetails == true){
+                Text(
+                    text = "Director: ${movie.director}",
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "Released: ${movie.year}",
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "Genre: ${movie.genre}",
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "Actors: ${movie.actors}",
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "Rating: ${movie.rating}",
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "Plot: ${movie.plot}",
+                    maxLines = 8,
+                    overflow = TextOverflow.Ellipsis
+                )
+
             }
         }
     }
