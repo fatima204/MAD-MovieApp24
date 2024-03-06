@@ -12,7 +12,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -77,6 +79,14 @@ import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.ui.theme.MovieAppMAD24Theme
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
+import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.AsyncImage
 
 data class BottomItem(
     val title: String,
@@ -114,15 +124,13 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         topBar = {
-                            TopAppBar(
+                            CenterAlignedTopAppBar(title = {
+                                Text(text = "Movie App")
+                                },
                                 colors = TopAppBarDefaults.topAppBarColors(
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     titleContentColor = MaterialTheme.colorScheme.primary,
-                                ),
-                                title = {
-                                    Text(text = "Movie App",
-                                        textAlign = TextAlign.Center)
-                                }
+                                )
                             )
                         },
                         bottomBar = {
@@ -150,7 +158,7 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         content = {
-                            MovieList(movies = getMovies())
+                            MovieList(movies = getMovies(), padding = it)
                         }
                     )
                 }
@@ -159,8 +167,11 @@ class MainActivity : ComponentActivity() {
     }
 
 @Composable
-fun MovieList(movies: List<Movie> = getMovies()) {
-    LazyColumn {
+fun MovieList(movies: List<Movie> = getMovies(), padding: PaddingValues) {
+    LazyColumn (
+        modifier = Modifier
+            .padding (paddingValues = padding)
+    ){
         items(movies) { movie ->
             MovieRow(movie)
         }
@@ -196,11 +207,18 @@ fun MovieRow(movie: Movie) {
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
+                AsyncImage(
+                    model = movie.images[0],
+                    contentDescription = "Movie Images",
+                    contentScale = FillWidth,
+                    modifier = Modifier
+                        .aspectRatio(ratio = 20f/8f)
+                )
+                /*Image(
                     painter = painterResource(id = R.drawable.movie_image),
                     contentScale = ContentScale.Crop,
                     contentDescription = "placeholder image"
-                )
+                )*/
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -257,6 +275,7 @@ fun MovieRow(movie: Movie) {
                     text = "Rating: ${movie.rating}",
                     overflow = TextOverflow.Ellipsis
                 )
+                Divider()
                 Text(
                     text = "Plot: ${movie.plot}",
                     maxLines = 8,
@@ -268,7 +287,7 @@ fun MovieRow(movie: Movie) {
     }
 }
 
-
+/*
 @Preview
 @Composable
 fun DefaultPreview() {
@@ -276,5 +295,6 @@ fun DefaultPreview() {
         MovieList(movies = getMovies())
     }
 }
+ */
 
 }
