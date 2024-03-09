@@ -100,8 +100,9 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         topBar = {
-                            CenterAlignedTopAppBar(title = {
-                                Text(text = "Movie App")
+                            CenterAlignedTopAppBar(
+                                title = {
+                                    Text(text = "Movie App")
                                 },
                                 colors = TopAppBarDefaults.topAppBarColors(
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -111,22 +112,22 @@ class MainActivity : ComponentActivity() {
                         },
                         bottomBar = {
                             NavigationBar {
-                                items.forEachIndexed{ index, item ->
+                                items.forEachIndexed { index, item ->
                                     NavigationBarItem(
                                         selected = selectedItemIndex == index,
                                         onClick = {
                                             selectedItemIndex = index
                                         },
                                         label = {
-                                          Text(text = item.title)
+                                            Text(text = item.title)
                                         },
                                         icon = {
                                             Icon(
-                                                imageVector = if(index == selectedItemIndex){
+                                                imageVector = if (index == selectedItemIndex) {
                                                     item.selectedIcon
-                                                    }else {
-                                                       item.unselectedIcon
-                                                    },
+                                                } else {
+                                                    item.unselectedIcon
+                                                },
                                                 contentDescription = item.title
                                             )
                                         })
@@ -142,99 +143,99 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-@Composable
-fun MovieList(movies: List<Movie> = getMovies(), padding: PaddingValues) {
-    LazyColumn (
-        modifier = Modifier
-            .padding (paddingValues = padding)
-    ){
-        items(movies) { movie ->
-            MovieRow(movie)
+    @Composable
+    fun MovieList(movies: List<Movie> = getMovies(), padding: PaddingValues) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues = padding)
+        ) {
+            items(movies) { movie ->
+                MovieRow(movie)
+            }
         }
     }
-}
 
-@Composable
-fun MovieRow(movie: Movie) {
-    var showDetails by remember {
-        mutableStateOf(false)
-    }
+    @Composable
+    fun MovieRow(movie: Movie) {
+        var showDetails by remember {
+            mutableStateOf(false)
+        }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-            .animateContentSize(
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing
-                )
-            ),
-        shape = ShapeDefaults.Large,
-        onClick = {
-                  showDetails = !showDetails
-        },
-        elevation = CardDefaults.cardElevation(10.dp)
-    ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                AsyncImage(
-                    model = movie.images[2],
-                    contentDescription = "Movie Images",
-                    contentScale = FillWidth,
-                    modifier = Modifier
-                        .aspectRatio(ratio = 20f/8.5f)
-                )
-                /*Image(
-                    painter = painterResource(id = R.drawable.movie_image),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "placeholder image"
-                )*/
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = LinearOutSlowInEasing
+                    )
+                ),
+            shape = ShapeDefaults.Large,
+            onClick = {
+                showDetails = !showDetails
+            },
+            elevation = CardDefaults.cardElevation(10.dp)
+        ) {
+            Column {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                    contentAlignment = Alignment.TopEnd
+                        .height(150.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
+                    AsyncImage(
+                        model = movie.images[2],
+                        contentDescription = "Movie Images",
+                        contentScale = FillWidth,
+                        modifier = Modifier
+                            .aspectRatio(ratio = 20f / 8.5f)
+                    )
+                    /*Image(
+                        painter = painterResource(id = R.drawable.movie_image),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "placeholder image"
+                    )*/
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        contentAlignment = Alignment.TopEnd
+                    ) {
+                        Icon(
+                            tint = MaterialTheme.colorScheme.secondary,
+                            imageVector = Icons.Default.FavoriteBorder,
+                            contentDescription = "Add to favorites"
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = movie.title)
                     Icon(
-                        tint = MaterialTheme.colorScheme.secondary,
-                        imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = "Add to favorites"
+                        modifier = Modifier
+                            .clickable {
+                                showDetails = !showDetails
+                            },
+                        imageVector =
+                        if (showDetails) Icons.Filled.KeyboardArrowDown
+                        else Icons.Default.KeyboardArrowUp, contentDescription = "show more"
                     )
                 }
-            }
+                if (showDetails == true) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = movie.title)
-                Icon(
-                    modifier = Modifier
-                        .clickable {
-                            showDetails = !showDetails
-                        },
-                    imageVector =
-                    if (showDetails) Icons.Filled.KeyboardArrowDown
-                    else Icons.Default.KeyboardArrowUp, contentDescription = "show more"
-                )
-            }
-            if(showDetails == true){
-                
-                DetailsText(movie = movie)
+                    DetailsText(movie = movie)
 
+                }
             }
         }
     }
-}
 
     @Composable
     fun DetailsText(movie: Movie) {
@@ -278,40 +279,6 @@ fun MovieRow(movie: Movie) {
             )
         }
     }
-
-/*@Composable
-fun DetailsText(movie: Movie){
-    Text(
-        text = "Director: ${movie.director}",
-        maxLines = 4,
-        overflow = TextOverflow.Ellipsis
-    )
-    Text(
-        text = "Released: ${movie.year}",
-        overflow = TextOverflow.Ellipsis
-    )
-    Text(
-        text = "Genre: ${movie.genre}",
-        maxLines = 4,
-        overflow = TextOverflow.Ellipsis
-    )
-    Text(
-        text = "Actors: ${movie.actors}",
-        maxLines = 4,
-        overflow = TextOverflow.Ellipsis
-    )
-    Text(
-        text = "Rating: ${movie.rating}",
-        overflow = TextOverflow.Ellipsis
-    )
-    Divider()
-    Text(
-        text = "Plot: ${movie.plot}",
-        maxLines = 8,
-        overflow = TextOverflow.Ellipsis
-    )
-}*/
-
 
     /*
     @Preview
