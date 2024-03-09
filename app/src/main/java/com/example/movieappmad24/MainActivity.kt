@@ -21,35 +21,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,40 +49,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.ModifierInfo
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.ui.theme.MovieAppMAD24Theme
-import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
-import coil.annotation.ExperimentalCoilApi
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.em
 import coil.compose.AsyncImage
 
-data class BottomItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -208,11 +184,11 @@ fun MovieRow(movie: Movie) {
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = movie.images[0],
+                    model = movie.images[2],
                     contentDescription = "Movie Images",
                     contentScale = FillWidth,
                     modifier = Modifier
-                        .aspectRatio(ratio = 20f/8f)
+                        .aspectRatio(ratio = 20f/8.5f)
                 )
                 /*Image(
                     painter = painterResource(id = R.drawable.movie_image),
@@ -252,49 +228,99 @@ fun MovieRow(movie: Movie) {
                 )
             }
             if(showDetails == true){
-                Text(
-                    text = "Director: ${movie.director}",
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "Released: ${movie.year}",
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "Genre: ${movie.genre}",
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "Actors: ${movie.actors}",
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "Rating: ${movie.rating}",
-                    overflow = TextOverflow.Ellipsis
-                )
-                Divider()
-                Text(
-                    text = "Plot: ${movie.plot}",
-                    maxLines = 8,
-                    overflow = TextOverflow.Ellipsis
-                )
+                
+                DetailsText(movie = movie)
 
             }
         }
     }
 }
 
-/*
-@Preview
-@Composable
-fun DefaultPreview() {
-    MovieAppMAD24Theme {
-        MovieList(movies = getMovies())
+    @Composable
+    fun DetailsText(movie: Movie) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Director: ${movie.director}",
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = "Released: ${movie.year}",
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = "Genre: ${movie.genre}",
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = "Actors: ${movie.actors}",
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = "Rating: ${movie.rating}",
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Divider(thickness = 1.dp, color = Color.Black)
+            Text(
+                text = "Plot: ${movie.plot}",
+                maxLines = 8,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
-}
- */
+
+/*@Composable
+fun DetailsText(movie: Movie){
+    Text(
+        text = "Director: ${movie.director}",
+        maxLines = 4,
+        overflow = TextOverflow.Ellipsis
+    )
+    Text(
+        text = "Released: ${movie.year}",
+        overflow = TextOverflow.Ellipsis
+    )
+    Text(
+        text = "Genre: ${movie.genre}",
+        maxLines = 4,
+        overflow = TextOverflow.Ellipsis
+    )
+    Text(
+        text = "Actors: ${movie.actors}",
+        maxLines = 4,
+        overflow = TextOverflow.Ellipsis
+    )
+    Text(
+        text = "Rating: ${movie.rating}",
+        overflow = TextOverflow.Ellipsis
+    )
+    Divider()
+    Text(
+        text = "Plot: ${movie.plot}",
+        maxLines = 8,
+        overflow = TextOverflow.Ellipsis
+    )
+}*/
+
+
+    /*
+    @Preview
+    @Composable
+    fun DefaultPreview() {
+        MovieAppMAD24Theme {
+            MovieList(movies = getMovies())
+        }
+    }
+     */
 
 }
