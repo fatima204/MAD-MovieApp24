@@ -101,8 +101,8 @@ class MainActivity : ComponentActivity() {
                                     icon = Icons.Default.Home
                                 ),
                                 BottomItem(
-                                    title = "Favorite",
-                                    route = "favorite",
+                                    title = "WatchList",
+                                    route = "watchList",
                                     icon = Icons.Default.Star
                                 )
                             ),
@@ -222,12 +222,12 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun FavoriteScreen() {
+    fun WatchListScreen() {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "Favorite screen")
+            Text(text = "Favorite movies are coming soon!")
         }
     }
 
@@ -237,8 +237,8 @@ class MainActivity : ComponentActivity() {
             composable("home") {
                 HomeScreen()
             }
-            composable("favorite") {
-                FavoriteScreen()
+            composable("watchList") {
+                WatchListScreen()
             }
         }
     }
