@@ -1,6 +1,5 @@
-package com.example.movieappmad24
+package com.example.movieappmad24.screens
 
-import android.graphics.drawable.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class BottomItem(
