@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -27,6 +28,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -60,13 +62,18 @@ import com.example.movieappmad24.models.getMovies
 @Composable
 fun DetailScreen(movieId: String?, navController: NavController) {
     //Text(text = "Hello DetailScreen $movieId")
-    val movieTitle = getMovies().find { it.id == movieId }
+    val movie = getMovies().find { it.id == movieId }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    movieTitle?.let { Text(text = it.title) }
+                    movie?.let { Text(text = it.title) }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Go back")
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -74,32 +81,6 @@ fun DetailScreen(movieId: String?, navController: NavController) {
                 )
             )
         },
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    label = { Text("Home") },
-                    selected = true,
-                    onClick = { /*TODO*/ },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Filled.Home,
-                            contentDescription = "Go to home"
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    label = { Text("Watchlist") },
-                    selected = false,
-                    onClick = { /*TODO*/ },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = "Go to watchlist"
-                        )
-                    }
-                )
-            }
-        }
     ) { innerPadding ->
         MovieList(
             modifier = Modifier.padding(innerPadding),
