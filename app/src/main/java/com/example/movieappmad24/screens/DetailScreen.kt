@@ -72,7 +72,10 @@ fun DetailScreen(movieId: String?, navController: NavController) {
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Go back")
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back to HomeScreen"
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
