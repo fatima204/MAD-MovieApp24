@@ -105,7 +105,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MovieList(
     modifier: Modifier,
-    movies: List<Movie> = getMovies(),
+    movies: List<Movie>,
     navController: NavController
 ){
     LazyColumn(modifier = modifier) {
