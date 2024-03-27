@@ -55,6 +55,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.getMovies
+import com.example.movieappmad24.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +76,7 @@ fun HomeScreen(navController: NavController) {
                 NavigationBarItem(
                     label = { Text("Home") },
                     selected = true,
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate(Screen.HomeScreen.route) },
                     icon = { Icon(
                         imageVector = Icons.Filled.Home,
                         contentDescription = "Go to home"
@@ -111,7 +112,7 @@ fun MovieList(
     LazyColumn(modifier = modifier) {
         items(movies) { movie ->
             MovieRow(movie = movie){ movieId ->
-                navController.navigate("detailscreen/$movieId")
+                navController.navigate(Screen.DetailScreen.CreateRoute(movieId))
             }
         }
     }
