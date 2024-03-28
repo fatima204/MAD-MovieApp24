@@ -1,10 +1,8 @@
 package com.example.movieappmad24.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.movieappmad24.screens.BottomItem
+import androidx.annotation.StringRes
+import com.example.movieappmad24.R
+
 
 sealed class Screen (val route: String){
     object HomeScreen: Screen("home_screen")

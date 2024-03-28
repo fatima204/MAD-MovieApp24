@@ -14,8 +14,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.navigation.Screen
@@ -36,9 +38,10 @@ fun WatchListScreen(navController: NavController) {
         },
         bottomBar = {
             NavigationBar {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
                 NavigationBarItem(
                     label = { Text("Home") },
-                    selected = true,
+                    selected = navBackStackEntry?.destination?.route == Screen.HomeScreen.route,
                     onClick = { navController.navigate(Screen.HomeScreen.route) },
                     icon = { Icon(
                         imageVector = Icons.Filled.Home,
@@ -47,7 +50,7 @@ fun WatchListScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     label = { Text("Watchlist") },
-                    selected = false,
+                    selected = navBackStackEntry?.destination?.route == Screen.WatchListScreen.route,
                     onClick = { navController.navigate(Screen.WatchListScreen.route)  },
                     icon = { Icon(
                         imageVector = Icons.Filled.Star,

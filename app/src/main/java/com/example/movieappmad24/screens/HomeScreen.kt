@@ -51,6 +51,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.movieappmad24.models.Movie
@@ -73,9 +75,10 @@ fun HomeScreen(navController: NavController) {
         },
         bottomBar = {
             NavigationBar {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
                 NavigationBarItem(
                     label = { Text("Home") },
-                    selected = true,
+                    selected = navBackStackEntry?.destination?.route == Screen.HomeScreen.route,
                     onClick = { navController.navigate(Screen.HomeScreen.route) },
                     icon = { Icon(
                         imageVector = Icons.Filled.Home,
@@ -84,7 +87,7 @@ fun HomeScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     label = { Text("Watchlist") },
-                    selected = false,
+                    selected = navBackStackEntry?.destination?.route == Screen.WatchListScreen.route,
                     onClick = { navController.navigate(Screen.WatchListScreen.route)  },
                     icon = { Icon(
                         imageVector = Icons.Filled.Star,
