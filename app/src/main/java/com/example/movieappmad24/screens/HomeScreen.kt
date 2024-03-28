@@ -85,7 +85,7 @@ fun HomeScreen(navController: NavController) {
                 NavigationBarItem(
                     label = { Text("Watchlist") },
                     selected = false,
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate(Screen.WatchListScreen.route)  },
                     icon = { Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = "Go to watchlist"

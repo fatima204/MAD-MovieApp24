@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappmad24.screens.DetailScreen
 import com.example.movieappmad24.screens.HomeScreen
+import com.example.movieappmad24.screens.WatchListScreen
 
 
 @Composable
@@ -19,6 +20,10 @@ fun Navigation() {
 
         composable(route = Screen.HomeScreen.route){   // route with name "homescreen" navigates to HomeScreen composable
             HomeScreen(navController = navController)
+        }
+
+        composable(route = Screen.WatchListScreen.route){   // route with name "homescreen" navigates to HomeScreen composable
+            WatchListScreen(navController = navController)
         }
 
         composable(
