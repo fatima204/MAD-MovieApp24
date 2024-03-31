@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.movieappmad24.models.getMovies
+import com.example.movieappmad24.navigation.Screen
 import com.example.movieappmad24.widgets.BottomNavItem
 import com.example.movieappmad24.widgets.MovieList
 import com.example.movieappmad24.widgets.SimpleBottomAppBar
@@ -26,12 +27,12 @@ fun HomeScreen(navController: NavController) {
                 items = listOf(
                     BottomNavItem(
                         name = "Home",
-                        route = "home_screen",
+                        route = Screen.HomeScreen.route,
                         icon = Icons.Default.Home
                     ),
                     BottomNavItem(
                         name = "Watchlist",
-                        route = "watchlist_screen",
+                        route = Screen.WatchListScreen.route,
                         icon = Icons.Default.Star
                     )
                 ),
