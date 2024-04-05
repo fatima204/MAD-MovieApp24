@@ -4,12 +4,23 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,32 +46,45 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.movieappmad24.models.Movie
+import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.navigation.Screen
+import com.example.movieappmad24.viewmodels.MoviesViewModel
+
 
 @Composable
 fun MovieList(
     modifier: Modifier,
-    movies: List<Movie>,
-    navController: NavController
+    movies: List<Movie> = getMovies(),
+    navController: NavController,
+    viewModel: MoviesViewModel
 ){
     LazyColumn(modifier = modifier) {
-        items(movies) { movie ->
-            MovieRow(movie = movie){ movieId ->
-                navController.navigate(Screen.DetailScreen.CreateRoute(movieId))
-            }
+        items(viewModel.movies) { movie ->
+            MovieRow(
+                movie = movie,
+                onFavoriteClick = {movieId ->
+                    viewModel.toggleFavoriteMovie(movieId)
+                },
+                onItemClick = { movieId ->
+                    navController.navigate(route = Screen.DetailScreen.withId(movieId))
+                }
+            )
         }
     }
 }
 
 @Composable
 fun MovieRow(
+    modifier: Modifier = Modifier,
     movie: Movie,
+    onFavoriteClick: (String) -> Unit = {},
     onItemClick: (String) -> Unit = {}
 ){
-    Card(modifier = Modifier
+    Card(modifier = modifier
         .fillMaxWidth()
         .padding(5.dp)
         .clickable {
@@ -71,16 +95,24 @@ fun MovieRow(
     ) {
         Column {
 
-            MovieCardHeader(imageUrl = movie.images[0])
+            MovieCardHeader(
+                imageUrl = movie.images[0],
+                isFavorite = movie.isFavorite,
+                onFavoriteClick = { onFavoriteClick(movie.id) }
+            )
 
-            MovieDetails(modifier = Modifier.padding(12.dp), movie = movie)
+            MovieDetails(modifier = modifier.padding(12.dp), movie = movie)
 
         }
     }
 }
 
 @Composable
-fun MovieCardHeader(imageUrl: String) {
+fun MovieCardHeader(
+    imageUrl: String,
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .height(150.dp)
@@ -90,7 +122,7 @@ fun MovieCardHeader(imageUrl: String) {
 
         MovieImage(imageUrl)
 
-        FavoriteIcon()
+        FavoriteIcon(isFavorite = isFavorite, onFavoriteClick)
     }
 }
 
@@ -110,7 +142,10 @@ fun MovieImage(imageUrl: String){
 }
 
 @Composable
-fun FavoriteIcon() {
+fun FavoriteIcon(
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -118,10 +153,17 @@ fun FavoriteIcon() {
         contentAlignment = Alignment.TopEnd
     ){
         Icon(
+            modifier = Modifier.clickable {
+                onFavoriteClick() },
             tint = MaterialTheme.colorScheme.secondary,
-            imageVector = Icons.Default.FavoriteBorder,
-            contentDescription = "Add to favorites"
-        )
+            imageVector =
+            if (isFavorite) {
+                Icons.Filled.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            },
+
+            contentDescription = "Add to favorites")
     }
 }
 
@@ -176,16 +218,26 @@ fun MovieDetails(modifier: Modifier, movie: Movie) {
     }
 }
 
+
 @Composable
-fun MovieDetailsImages(images: List<String>) {
+fun HorizontalScrollableImageView(movie: Movie) {
     LazyRow {
-        items(images) { imageUrl ->
+        items(movie.images) { image ->
             Card(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .size(200.dp)
+                    .padding(12.dp)
+                    .size(240.dp),
+                elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                MovieImage(imageUrl = imageUrl)
+
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(image)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Movie poster",
+                    contentScale = ContentScale.Crop
+                )
             }
         }
     }

@@ -1,69 +1,56 @@
 package com.example.movieappmad24.widgets
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimpleTopAppBar(title: String, arrowBackIcon: @Composable (() -> Unit)? = null) {
+fun SimpleTopAppBar(
+    title: String,
+    navigationIcons: @Composable () -> Unit = {},
+){
     CenterAlignedTopAppBar(
         title = { Text(title) },
-        navigationIcon = {
-            if (arrowBackIcon != null) {
-                arrowBackIcon()
-            }
-        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.primary
-        )
+        ),
+        navigationIcon = navigationIcons
     )
 }
 
 @Composable
-fun SimpleBottomAppBar(
-    items: List<BottomNavItem>,
-    navController: NavController,
-    modifier: Modifier = Modifier,
-    onItemClick: (BottomNavItem) -> Unit
-){
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    BottomNavigation (
-        modifier = modifier,
-        backgroundColor = MaterialTheme.colorScheme.primaryContainer
-    ){
-        items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
-            BottomNavigationItem(
-                selected = selected,
-                selectedContentColor = MaterialTheme.colorScheme.primary,
-                unselectedContentColor = MaterialTheme.colorScheme.primary,
-                onClick = { onItemClick(item) },
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.name
-                    )
-                },
-                label = {
-                    Text(
-                        text = item.name,
-                        fontSize = 10.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
+fun SimpleBottomAppBar(navController: NavController) {
+    val screens = listOf(
+        BottomBarScreen.Home,
+        BottomBarScreen.Watchlist
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    NavigationBar {
+        screens.forEach { screen ->
+            NavigationBarItem(label = { Text(screen.title) },
+                selected = currentDestination?.hierarchy?.any {
+                    it.route == screen.route
+                } == true,
+                onClick = { navController.navigate(screen.route) },
+                icon = { Icon(
+                    imageVector = screen.icon,
+                    contentDescription = screen.title
+                )}
             )
         }
     }
