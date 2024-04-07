@@ -18,6 +18,4 @@ class MoviesViewModel : ViewModel() {
         movie.isFavorite = !movie.isFavorite
     }
 
-
-    // rest of logic
 }

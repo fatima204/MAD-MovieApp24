@@ -23,3 +23,4 @@ sealed class BottomBarScreen(
         icon = Icons.Filled.Star
     )
 }
+

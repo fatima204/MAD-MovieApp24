@@ -10,6 +10,7 @@ import com.example.movieappmad24.viewmodels.MoviesViewModel
 import com.example.movieappmad24.widgets.MovieList
 import com.example.movieappmad24.widgets.SimpleBottomAppBar
 import com.example.movieappmad24.widgets.SimpleTopAppBar
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun WatchlistScreen(
@@ -29,10 +30,11 @@ fun WatchlistScreen(
 
         MovieList(
             modifier = Modifier.padding(innerPadding),
-            movies = getMovies(),
+            showFavorites = true,
             navController = navController,
             viewModel = moviesViewModel
         )
 
     }
 }
+

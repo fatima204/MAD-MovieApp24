@@ -27,11 +27,12 @@ fun HomeScreen(
     ){ innerPadding ->
         MovieList(
             modifier = Modifier.padding(innerPadding),
-            movies = moviesViewModel.movies,
+            showFavorites = false,
             navController = navController,
             viewModel = moviesViewModel
         )
     }
 }
+
 
 

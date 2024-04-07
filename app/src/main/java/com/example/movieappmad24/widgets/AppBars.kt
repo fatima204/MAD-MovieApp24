@@ -55,3 +55,4 @@ fun SimpleBottomAppBar(navController: NavController) {
         }
     }
 }
+

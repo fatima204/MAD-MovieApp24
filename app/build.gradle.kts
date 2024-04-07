@@ -56,9 +56,14 @@ android {
 dependencies {
 
     implementation("com.google.ai.client.generativeai:generativeai:0.2.1")
+
     val nav_version = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    val lifecycle_version = "2.7.0"
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
