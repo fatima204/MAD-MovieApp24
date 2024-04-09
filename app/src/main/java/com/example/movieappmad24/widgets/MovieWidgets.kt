@@ -1,6 +1,5 @@
 package com.example.movieappmad24.widgets
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -63,6 +62,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
@@ -263,7 +263,7 @@ fun HorizontalScrollableImageView(movie: Movie) {
     }
 }
 
-/*@Composable
+@Composable
 fun VideoPlayer(){
     var lifecycle by remember{
         mutableStateOf(Lifecycle.Event.ON_CREATE)
@@ -274,10 +274,6 @@ fun VideoPlayer(){
     val mediaItem = MediaItem.fromUri(
         "android.resource://${context.packageName}/${R.raw.trailer_placeholder}"
     )
-
-    *//*val resId = context.resources.getIdentifier("trailer_placeholder", "raw", context.packageName)
-    val mediaItem = MediaItem.fromUri("android.resource://${context.packageName}/$resId")
-*//*
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -325,4 +321,6 @@ fun VideoPlayer(){
         }
     )
 
-}*/
+}
+
+
