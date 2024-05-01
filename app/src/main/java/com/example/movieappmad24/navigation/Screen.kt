@@ -10,4 +10,3 @@ sealed class Screen(val route: String) {
     }
     object WatchlistScreen : Screen("watchlist")
 }
-

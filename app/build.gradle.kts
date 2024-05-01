@@ -1,6 +1,9 @@
 plugins {
+    //id("com.android.application")
+    //id("org.jetbrains.kotlin.android")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp") version "1.9.21-1.0.15"
 }
 
 kotlin {
@@ -43,13 +46,16 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
+    /*composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
-    }
+    }*/
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
 }
 
@@ -64,6 +70,15 @@ dependencies {
     val lifecycle_version = "2.7.0"
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+
+    val room_version = "2.6.1"
+
+    // room dependencies
+    implementation("androidx.room:room-runtime:$room_version")
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
