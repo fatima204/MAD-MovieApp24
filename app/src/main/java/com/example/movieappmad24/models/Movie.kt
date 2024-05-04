@@ -1,15 +1,12 @@
 package com.example.movieappmad24.models
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.coroutines.flow.StateFlow
 
 @Entity
-data class Movie(
+class Movie(
     @PrimaryKey(autoGenerate = true)
     val dbId: Long = 0,
     val id: String,
@@ -24,7 +21,36 @@ data class Movie(
     val trailer: String,
     val rating: String,
     var isFavorite: Boolean = false
-)
+){
+    constructor(
+        dbId: Long,
+        id: String,
+        title: String,
+        year: String,
+        genre: String,
+        director: String,
+        actors: String,
+        plot: String,
+        //images: List<String>,
+        trailer: String,
+        rating: String,
+        isFavorite: Boolean = false
+    ) : this(
+        dbId = dbId,
+        id = id,
+        title = title,
+        year = year,
+        genre = genre,
+        director = director,
+        actors = actors,
+        plot = plot,
+        images = emptyList(),
+        trailer = trailer,
+        rating = rating,
+        isFavorite = isFavorite
+    )
+}
+
 
 fun getMovies(): List<Movie> {
     return listOf(
