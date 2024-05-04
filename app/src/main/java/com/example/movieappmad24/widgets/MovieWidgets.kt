@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,16 +47,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import com.example.movieappmad24.data.MovieDatabase
+import com.example.movieappmad24.data.MovieRepository
 import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.MovieImage
 import com.example.movieappmad24.models.MovieWithImages
 import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.navigation.Screen
 import com.example.movieappmad24.viewmodels.MovieViewModel
+import com.example.movieappmad24.viewmodels.MoviesViewModelFactory
+import com.example.movieappmad24.viewmodels.screenViewModel.HomeViewModel
+import com.example.movieappmad24.viewmodels.screenViewModel.WatchListViewModel
 
 
 @Composable
@@ -79,6 +86,7 @@ fun MovieList(
         }
     }
 }
+
 
 @Composable
 fun MovieRow(

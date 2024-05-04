@@ -36,4 +36,5 @@ class WatchListViewModel(private val repository: MovieRepository) : ViewModel(),
             repository.updateMovie(movie.movie)
         }
     }
+
 }
