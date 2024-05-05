@@ -29,9 +29,9 @@ class HomeViewModel(private val repository: MovieRepository) : ViewModel(), Movi
 
     override fun toggleFavoriteMovie(movie: MovieWithImages) {
         viewModelScope.launch {
-            movie.movie.isFavorite != movie.movie.isFavorite
-
-            repository.updateMovie(movie.movie)
+            val updatedMovie = movie.movie.copy(isFavorite = !movie.movie.isFavorite)
+            repository.updateMovie(updatedMovie)
         }
     }
+
 }

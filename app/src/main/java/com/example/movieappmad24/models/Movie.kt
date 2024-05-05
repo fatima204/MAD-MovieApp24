@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlinx.coroutines.flow.StateFlow
 
 @Entity
-class Movie(
+data class Movie(
     @PrimaryKey(autoGenerate = true)
     val dbId: Long = 0,
     val id: String,

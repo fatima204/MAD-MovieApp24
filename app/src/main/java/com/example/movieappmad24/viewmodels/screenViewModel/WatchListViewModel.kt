@@ -15,25 +15,24 @@ import kotlinx.coroutines.launch
 class WatchListViewModel(private val repository: MovieRepository) : ViewModel(), MovieViewModel {
 
     private val _favoriteMovieList = MutableStateFlow<List<MovieWithImages>>(emptyList())
-    var favoriteMovies: StateFlow<List<MovieWithImages>> = _favoriteMovieList.asStateFlow()
+    val favoriteMovies: StateFlow<List<MovieWithImages>> = _favoriteMovieList.asStateFlow()
 
-    init{
+    init {
         getFavoriteMovies()
     }
 
     private fun getFavoriteMovies() {
         viewModelScope.launch {
-            repository.getFavoriteMovies().collect{
-                _favoriteMovieList.value = it
+            repository.getFavoriteMovies().collect { favoriteMovies ->
+                _favoriteMovieList.value = favoriteMovies
             }
         }
     }
 
     override fun toggleFavoriteMovie(movie: MovieWithImages) {
         viewModelScope.launch {
-            movie.movie.isFavorite != movie.movie.isFavorite
-
-            repository.updateMovie(movie.movie)
+            val updatedMovie = movie.movie.copy(isFavorite = !movie.movie.isFavorite)
+            repository.updateMovie(updatedMovie)
         }
     }
 
